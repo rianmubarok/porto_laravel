@@ -18,43 +18,39 @@ class LevelUserSeeder extends Seeder
         $adminLevel = Level::where('name', 'Admin')->first();
         $userLevel = Level::where('name', 'User')->first();
 
-        // Ambil user yang sudah ada (atau buat dummy user)
-        $users = User::all();
+        // Hapus user demo yang lama jika ada
+        User::where('email', 'admin@example.com')->delete();
+        User::where('email', 'user@example.com')->delete();
 
-        if ($users->isEmpty()) {
-            // Jika tidak ada user, buat dummy user
-            $adminUser = User::create([
-                'name' => 'Administrator',
-                'email' => 'admin@example.com',
-                'password' => bcrypt('password'),
-            ]);
+        // Buat user admin baru dengan credentials yang lebih aman
+        $adminUser = User::create([
+            'name' => 'Administrator',
+            'email' => 'admin@portfolioweb.com',
+            'password' => bcrypt('Admin123!'),
+        ]);
 
-            $regularUser = User::create([
-                'name' => 'Regular User',
-                'email' => 'user@example.com',
-                'password' => bcrypt('password'),
-            ]);
+        // Buat user regular baru dengan credentials yang lebih aman
+        $regularUser = User::create([
+            'name' => 'Regular User',
+            'email' => 'user@portfolioweb.com',
+            'password' => bcrypt('User123!'),
+        ]);
 
-            // Assign level ke user
-            $adminUser->levels()->attach($adminLevel->id);
-            $regularUser->levels()->attach($userLevel->id);
-        } else {
-            // Jika sudah ada user, assign level berdasarkan kondisi tertentu
-            foreach ($users as $user) {
-                // Contoh: user dengan email admin akan mendapat level Admin
-                if (str_contains(strtolower($user->email), 'admin')) {
-                    $user->levels()->sync([$adminLevel->id]);
-                } else {
-                    // User lain mendapat level User
-                    $user->levels()->sync([$userLevel->id]);
-                }
+        // Assign level ke user
+        $adminUser->levels()->attach($adminLevel->id);
+        $regularUser->levels()->attach($userLevel->id);
+
+        // Jika ada user lain yang sudah ada, assign level berdasarkan kondisi tertentu
+        $existingUsers = User::whereNotIn('email', ['admin@portfolioweb.com', 'user@portfolioweb.com'])->get();
+        
+        foreach ($existingUsers as $user) {
+            // User dengan email yang mengandung 'admin' akan mendapat level Admin
+            if (str_contains(strtolower($user->email), 'admin')) {
+                $user->levels()->sync([$adminLevel->id]);
+            } else {
+                // User lain mendapat level User
+                $user->levels()->sync([$userLevel->id]);
             }
         }
-
-        // Alternatif: Assign multiple levels ke satu user
-        // $firstUser = User::first();
-        // if ($firstUser) {
-        //     $firstUser->levels()->attach([$adminLevel->id, $userLevel->id]);
-        // }
     }
 } 

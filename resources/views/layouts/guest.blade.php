@@ -42,30 +42,15 @@
                 font-family: var(--font-satoshi);
                 font-weight: 500;
             }
+            .card-home {
+                border-radius: 20px;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            }
         </style>
         @yield('styles')
     </head>
     <body>
-        <div class="min-vh-100 d-flex align-items-center justify-content-center py-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="text-center mb-4">
-                            <a href="{{ route('home') }}" class="text-decoration-none">
-                                <h2 class="fw-bold text-primary">My Portfolio</h2>
-                            </a>
-                        </div>
-                        
-                        <div class="card shadow-lg border-0 rounded-3">
-                            <div class="card-body p-5">
-                                @yield('content')
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        @yield('content')
         <!-- jQuery (required for some Bootstrap features) -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 

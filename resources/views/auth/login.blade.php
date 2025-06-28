@@ -3,85 +3,139 @@
 @section('title', 'Login - My Portfolio')
 
 @section('content')
-    <div class="text-center mb-4">
-        <h2 class="fw-bold" style="color: #6b5ce5; letter-spacing: -1px;">Login</h2>
-        <p class="text-muted">Masuk ke akun Anda</p>
-    </div>
-
-    @if (session('status'))
-        <div class="alert alert-info mb-4">
-            {{ session('status') }}
+<div class="d-flex justify-content-center align-items-center min-vh-100" style="background: none;">
+    <div class="login-card p-4 p-md-5 w-100" style="max-width: 420px;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold mb-2 login-title">Login</h2>
+            <p class="text-muted mb-0">Masuk ke akun Anda</p>
         </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus>
-            @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
-            @error('password')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="remember_me" name="remember">
-                <label class="form-check-label" for="remember_me">Remember me</label>
+        @if (session('status'))
+            <div class="alert alert-info mb-4">
+                {{ session('status') }}
             </div>
-        </div>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="text-decoration-none">Forgot your password?</a>
-            @endif
-            <button type="submit" class="btn btn-primary px-4 py-2 shadow-sm" style="border-radius: 10px; background: #6b5ce5; border: none; font-weight: 500;">
-                <i class="bi bi-box-arrow-in-right me-2"></i>Log in
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <form method="POST" action="{{ route('login') }}" autocomplete="off">
+            @csrf
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group login-input-group">
+                    <span class="input-group-text bg-transparent border-0 pe-1"><i class="bi bi-envelope"></i></span>
+                    <input type="email" class="form-control login-input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Masukkan email Anda">
+                </div>
+                @error('email')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group login-input-group">
+                    <span class="input-group-text bg-transparent border-0 pe-1"><i class="bi bi-lock"></i></span>
+                    <input type="password" class="form-control login-input @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Masukkan password Anda">
+                </div>
+                @error('password')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3 d-flex align-items-center justify-content-between">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="remember_me" name="remember">
+                    <label class="form-check-label" for="remember_me">Ingat saya</label>
+                </div>
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}" class="login-link">Lupa password?</a>
+                @endif
+            </div>
+            <button type="submit" class="btn login-btn w-100 py-2 mb-2">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
             </button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="{{ route('home') }}" class="login-link">
+                <i class="bi bi-arrow-left me-1"></i>Kembali ke Beranda
+            </a>
         </div>
-    </form>
-    <div class="text-center mt-4">
-        <a href="{{ route('home') }}" class="text-decoration-none">
-            <i class="bi bi-arrow-left me-1"></i>Kembali ke Beranda
-        </a>
-    </div>
-    <div class="card mt-4 border-0 shadow-sm" style="border-radius: 16px; background: linear-gradient(135deg, #e3f2fd 0%, #ede7f6 100%);">
-        <div class="card-body">
-            <h6 class="card-title mb-2" style="color: #6b5ce5; font-weight: 600;">
-                <i class="bi bi-info-circle me-1"></i>Demo Credentials
-            </h6>
-            <div class="row">
-                <div class="col-6">
-                    <small class="text-muted"><strong>Admin:</strong><br>Email: admin@example.com<br>Password: password</small>
-                </div>
-                <div class="col-6">
-                    <small class="text-muted"><strong>User:</strong><br>Email: user@example.com<br>Password: password</small>
-                </div>
-            </div>
+        <div class="text-center mt-3">
+            <p class="text-muted mb-0">Belum punya akun? 
+                <a href="{{ route('register') }}" class="login-link">Daftar di sini</a>
+            </p>
         </div>
     </div>
-    <style>
-        .btn-primary {
-            background: #6b5ce5;
-            border: none;
-        }
-        .btn-primary:hover, .btn-primary:focus {
-            background: #5746c6;
-        }
-    </style>
+</div>
+<style>
+.login-card {
+    border-radius: 28px;
+    background: linear-gradient(135deg, #e3f2fd 0%, #ede7f6 100%);
+    box-shadow: none;
+    margin: 32px auto;
+    transition: background 0.2s;
+}
+.login-card:hover {
+    /* efek hover scale dihilangkan */
+}
+.login-title {
+    color: #6b5ce5;
+    letter-spacing: -1px;
+    font-size: 2.1rem;
+}
+.login-input-group {
+    border-radius: 14px;
+    background: #f8f9fa;
+    border: 1.5px solid #e0e0e0;
+    transition: border-color 0.2s;
+}
+.login-input:focus {
+    border-color: #6b5ce5;
+    box-shadow: none;
+    background: #f3f6fd;
+}
+.login-input {
+    border-radius: 14px;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    padding-left: 0;
+}
+.input-group-text {
+    color: #6b5ce5;
+    font-size: 1.1rem;
+}
+.login-btn {
+    background: linear-gradient(90deg, #6b5ce5 60%, #5746c6 100%);
+    border: none;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #fff;
+    transition: background 0.2s;
+    box-shadow: none;
+}
+.login-btn:hover, .login-btn:focus {
+    background: linear-gradient(90deg, #5746c6 60%, #6b5ce5 100%);
+    color: #fff;
+}
+.login-link {
+    color: #6b5ce5;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.login-link:hover, .login-link:focus {
+    color: #5746c6;
+    text-decoration: underline;
+}
+@media (max-width: 576px) {
+    .login-card {
+        padding: 1.5rem 0.5rem;
+    }
+}
+</style>
 @endsection
